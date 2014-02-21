@@ -10,6 +10,7 @@ var COMPUTER_PLAYER = 'X';
 var active_turn = "HUMAN";
 var choice;
 var searchTimes = new Array();
+var showAverageTime = true;
 
 function NewGame() {
     for (i = 0; i < BOARD_SIZE; i++)
@@ -18,13 +19,14 @@ function NewGame() {
         document.images[i].src = "images/blank.png";
     }
     DeleteTimes();
+    showAverageTime = true;
     var alert = document.getElementById("turnInfo");
     active_turn = "HUMAN";
     alert.innerHTML = "Your turn!";
 }
 
 function MakeMove(pos) {
-    if (!GameOver(board) && board[pos] !==COMPUTER_PLAYER && board[pos] !==HUMAN_PLAYER)
+    if (!GameOver(board) && board[pos] === UNOCCUPIED)
     {
         board[pos] = HUMAN_PLAYER;
         document.images[pos].src = playerImage.src;
@@ -222,11 +224,15 @@ function DeleteTimes() {
 }
 
 function ShowAverageTime() {
-    var sum = 0;
-    var i = 0;
-    for (i; i < searchTimes.length; i++) {
-        sum += searchTimes[i];
+    if (showAverageTime)
+    {
+        var sum = 0;
+        var i = 0;
+        for (i; i < searchTimes.length; i++)
+            sum += searchTimes[i];
+        
+        document.getElementById("searchTime").innerHTML =
+                document.getElementById("searchTime").innerHTML + "<br />Average search was <strong>" + sum / i + "</strong> seconds. <br />";
+        showAverageTime = false;
     }
-    document.getElementById("searchTime").innerHTML = 
-            document.getElementById("searchTime").innerHTML + "<br />Average search was <strong>" + sum/i + "</strong> seconds. <br />";
 }
